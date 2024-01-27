@@ -104,7 +104,7 @@
             // 
             ProgressPercentageText.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             ProgressPercentageText.AutoSize = true;
-            ProgressPercentageText.BackColor = Color.CornflowerBlue;
+            ProgressPercentageText.BackColor = Color.SteelBlue;
             ProgressPercentageText.FlatStyle = FlatStyle.System;
             ProgressPercentageText.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
             ProgressPercentageText.ForeColor = SystemColors.ButtonFace;
@@ -147,7 +147,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.CornflowerBlue;
+            BackColor = Color.SteelBlue;
             ClientSize = new Size(898, 424);
             Controls.Add(label3);
             Controls.Add(UninstallButton);
