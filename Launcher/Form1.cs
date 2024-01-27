@@ -7,6 +7,8 @@ using System.Runtime.InteropServices;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Security.Principal;
+using System.Text.Json.Serialization;
+using System.Text.Json.Nodes;
 
 namespace Launcher
 {
@@ -37,7 +39,6 @@ namespace Launcher
         void UpdateState(State NewState)
         {
             CurrentState = NewState;
-
             switch (NewState)
             {
                 //MAKE SURE FUNCTION CALLS ARE ALWAYS 1 LINE BEFORE RETURN IN CASE
@@ -109,13 +110,19 @@ namespace Launcher
         }
         string API_GetLatestVer()
         {
-            //add
-            return "[API_GAME_VERSION]";
+            using (WebClient client = new WebClient())
+            {
+                var JSONString = client.DownloadString("https://upload.violated.one/survmulti/latest.php");
+                var JObject = JsonNode.Parse(JSONString)["version"];
+
+                return JObject.ToJsonString().Replace('"', ' ').Trim();
+            }
         }
         private void UninstallGame()
         {
             System.IO.Directory.Delete(gameDir + "/game", true);
             UpdateState(State.CHECK_FILES);
+            SetGameVersion();
         }
         private void DownloadGame()
         {
@@ -160,19 +167,24 @@ namespace Launcher
         {
             if (System.IO.File.Exists(gameDir + "/game/version.md"))
             {
-                string current_ver = ("Game Version: " + System.IO.File.ReadAllText(gameDir + "/game/version.md"));
+                string current_ver = (System.IO.File.ReadAllText(gameDir + "/game/version.md"));
                 string api_ver = API_GetLatestVer();
-                label2.Text = current_ver;
+                label2.Text = "Game Version: " + current_ver;
+                label2.ForeColor = Color.Lime;
 
                 if (current_ver != api_ver)
                 {
-                    //retrieve API version
-                    label2.Text = "Update Available: " + api_ver;
+                UpdateState(State.UPDATE_AVAILABLE);
+                }
+                else
+                {
+                    UpdateState(State.CAN_PLAY);
                 }
             }
             else
             {
                 label2.Text = "Game not Installed";
+                label2.ForeColor = Color.Red;
             }
         }
 
@@ -211,6 +223,7 @@ namespace Launcher
         {
             UpdateState(State.INIT);
             SetGameVersion();
+            label3.Text = "API Game Version: " + API_GetLatestVer();
         }
 
         private void StateButton_Click(object sender, EventArgs e)
@@ -242,6 +255,7 @@ namespace Launcher
                     Application.Exit();
                     return;
             }
+        }
 
             static bool IsAdministrator()
             {
@@ -253,7 +267,6 @@ namespace Launcher
                         return principal.IsInRole(WindowsBuiltInRole.Administrator);
 #endif
             }
-        }
 
         private void UninstallButton_Click(object sender, EventArgs e)
         {
