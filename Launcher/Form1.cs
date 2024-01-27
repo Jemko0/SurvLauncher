@@ -124,7 +124,6 @@ namespace Launcher
                 client.DownloadProgressChanged += wc_DownloadProgressChanged;
                 client.DownloadFileAsync(new System.Uri("https://upload.violated.one/survmulti/game.zip"), gameDir + "/game.zip");
                 client.DownloadFileCompleted += OnfinishDownload;
-
             }
         }
         // Event to track the progress
@@ -152,7 +151,7 @@ namespace Launcher
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.Message + "\r\nTry Again", "LaunchApp Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(err.Message + "\r\nTry Again", "Extract Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             UpdateState(State.CHECK_FILES);
         }
@@ -225,7 +224,7 @@ namespace Launcher
                     }
                     else
                     {
-                        MessageBox.Show("The Program could not install due to permission conflicts.");
+                        MessageBox.Show("The Program could not install due to permission conflicts.\r\nTry running as Administrator!");
                     }
                     return;
 
