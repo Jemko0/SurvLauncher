@@ -112,10 +112,19 @@ namespace Launcher
         {
             using (WebClient client = new WebClient())
             {
-                var JSONString = client.DownloadString("https://upload.violated.one/survmulti/latest.php");
-                var JObject = JsonNode.Parse(JSONString)["version"];
+                try
+                {
+                    var JSONString = client.DownloadString("https://upload.violated.one/survmulti/latest.php");
+                    var JObject = JsonNode.Parse(JSONString)["version"];
+                    return JObject.ToJsonString().Replace('"', ' ').Trim();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "API Remote Server Error");
+                    return "";
+                }
 
-                return JObject.ToJsonString().Replace('"', ' ').Trim();
+                
             }
         }
         private void UninstallGame()
@@ -217,6 +226,14 @@ namespace Launcher
                 richTextBox1.Text = "gamedir made";
                 UpdateState(State.CHECK_FILES);
             }
+        }
+
+        string CurrentLauncherVer;
+        private void CheckLauncherVersion()
+        {
+            CurrentLauncherVer = System.IO.File.ReadAllText(gameDir + "");
+            label4.Text = CurrentLauncherVer;
+            //API CALL HERE
         }
 
         private void Form1_Load(object sender, EventArgs e)
