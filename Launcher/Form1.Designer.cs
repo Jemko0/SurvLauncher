@@ -43,20 +43,20 @@
             // progressBar1
             // 
             progressBar1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            progressBar1.Location = new Point(170, 154);
-            progressBar1.Margin = new Padding(2, 2, 2, 2);
+            progressBar1.Location = new Point(170, 209);
+            progressBar1.Margin = new Padding(2);
             progressBar1.Name = "progressBar1";
-            progressBar1.Size = new Size(400, 28);
+            progressBar1.Size = new Size(465, 28);
             progressBar1.Step = 1;
             progressBar1.TabIndex = 0;
             // 
             // richTextBox1
             // 
             richTextBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            richTextBox1.Location = new Point(10, 297);
-            richTextBox1.Margin = new Padding(2, 2, 2, 2);
+            richTextBox1.Location = new Point(10, 352);
+            richTextBox1.Margin = new Padding(2);
             richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(701, 34);
+            richTextBox1.Size = new Size(766, 34);
             richTextBox1.TabIndex = 1;
             richTextBox1.TabStop = false;
             richTextBox1.Text = "console output";
@@ -69,7 +69,7 @@
             label1.FlatStyle = FlatStyle.Flat;
             label1.Font = new Font("Segoe UI", 32F, FontStyle.Regular, GraphicsUnit.Point);
             label1.ForeColor = SystemColors.ButtonFace;
-            label1.Location = new Point(33, 30);
+            label1.Location = new Point(65, 30);
             label1.Margin = new Padding(0);
             label1.Name = "label1";
             label1.Size = new Size(713, 72);
@@ -80,11 +80,11 @@
             // 
             StateButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             StateButton.ForeColor = SystemColors.InfoText;
-            StateButton.Location = new Point(214, 202);
+            StateButton.Location = new Point(214, 257);
             StateButton.Margin = new Padding(0);
             StateButton.Name = "StateButton";
-            StateButton.Padding = new Padding(4, 4, 4, 4);
-            StateButton.Size = new Size(297, 39);
+            StateButton.Padding = new Padding(4);
+            StateButton.Size = new Size(362, 39);
             StateButton.TabIndex = 3;
             StateButton.Text = "BUTTON_STATE";
             StateButton.UseVisualStyleBackColor = true;
@@ -97,7 +97,7 @@
             label2.FlatStyle = FlatStyle.Flat;
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             label2.ForeColor = SystemColors.ButtonFace;
-            label2.Location = new Point(43, 101);
+            label2.Location = new Point(75, 101);
             label2.Margin = new Padding(2, 0, 2, 0);
             label2.Name = "label2";
             label2.Size = new Size(239, 28);
@@ -113,7 +113,7 @@
             ProgressPercentageText.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
             ProgressPercentageText.ForeColor = SystemColors.ButtonFace;
             ProgressPercentageText.ImageAlign = ContentAlignment.MiddleLeft;
-            ProgressPercentageText.Location = new Point(572, 150);
+            ProgressPercentageText.Location = new Point(637, 205);
             ProgressPercentageText.Margin = new Padding(2, 0, 2, 0);
             ProgressPercentageText.Name = "ProgressPercentageText";
             ProgressPercentageText.Size = new Size(48, 35);
@@ -125,11 +125,11 @@
             // 
             UninstallButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             UninstallButton.ForeColor = SystemColors.InfoText;
-            UninstallButton.Location = new Point(214, 246);
+            UninstallButton.Location = new Point(214, 301);
             UninstallButton.Margin = new Padding(0);
             UninstallButton.Name = "UninstallButton";
-            UninstallButton.Padding = new Padding(4, 4, 4, 4);
-            UninstallButton.Size = new Size(297, 32);
+            UninstallButton.Padding = new Padding(4);
+            UninstallButton.Size = new Size(362, 32);
             UninstallButton.TabIndex = 6;
             UninstallButton.Text = "Uninstall";
             UninstallButton.UseVisualStyleBackColor = true;
@@ -142,7 +142,7 @@
             label3.FlatStyle = FlatStyle.Flat;
             label3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             label3.ForeColor = Color.Lime;
-            label3.Location = new Point(43, 126);
+            label3.Location = new Point(75, 126);
             label3.Margin = new Padding(2, 0, 2, 0);
             label3.Name = "label3";
             label3.Size = new Size(227, 28);
@@ -151,24 +151,25 @@
             // 
             // label4
             // 
+            label4.AccessibleName = "";
             label4.Anchor = AnchorStyles.Top;
             label4.AutoSize = true;
             label4.FlatStyle = FlatStyle.Flat;
             label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label4.ForeColor = Color.Lime;
-            label4.Location = new Point(297, 102);
+            label4.ForeColor = SystemColors.ButtonFace;
+            label4.Location = new Point(421, 126);
             label4.Margin = new Padding(2, 0, 2, 0);
             label4.Name = "label4";
-            label4.Size = new Size(251, 28);
+            label4.Size = new Size(214, 28);
             label4.TabIndex = 8;
-            label4.Text = "API_LAUNCHER_VER: v0.0.0";
+            label4.Text = "LAUNCHER_VER: v0.0.0";
             // 
             // SurvLauncher
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SteelBlue;
-            ClientSize = new Size(722, 346);
+            ClientSize = new Size(787, 401);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(UninstallButton);
@@ -179,7 +180,7 @@
             Controls.Add(richTextBox1);
             Controls.Add(progressBar1);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(2, 2, 2, 2);
+            Margin = new Padding(2);
             MaximizeBox = false;
             MinimumSize = new Size(740, 393);
             Name = "SurvLauncher";

@@ -20,6 +20,8 @@ namespace Launcher
         }
 
         private string launcher_ver = "v2.3 - beta";
+
+        private bool API_ONLINE = false;
         private enum State
         {
             INIT,
@@ -34,6 +36,7 @@ namespace Launcher
 
         //directory but with /game added
         private string gameDir = System.IO.Directory.GetCurrentDirectory() + "/game";
+        private string currDir = System.IO.Directory.GetCurrentDirectory();
 
         State CurrentState;
         void UpdateState(State NewState)
@@ -61,6 +64,7 @@ namespace Launcher
                     progressBar1.Visible = false;
                     ProgressPercentageText.Visible = false;
                     UninstallButton.Visible = false;
+                    CheckLauncherVersion();
                     CheckFiles();
                     return;
 
@@ -116,6 +120,7 @@ namespace Launcher
                 {
                     var JSONString = client.DownloadString("https://upload.violated.one/survmulti/latest.php");
                     var JObject = JsonNode.Parse(JSONString)["version"];
+                    API_ONLINE = true;
                     return JObject.ToJsonString().Replace('"', ' ').Trim();
                 }
                 catch (Exception ex)
@@ -172,7 +177,7 @@ namespace Launcher
             UpdateState(State.CHECK_FILES);
         }
 
-        void SetGameVersion()
+        public void SetGameVersion()
         {
             if (System.IO.File.Exists(gameDir + "/game/version.md"))
             {
@@ -231,16 +236,19 @@ namespace Launcher
         string CurrentLauncherVer;
         private void CheckLauncherVersion()
         {
-            CurrentLauncherVer = System.IO.File.ReadAllText(gameDir + "");
-            label4.Text = CurrentLauncherVer;
+            launcher_ver = System.IO.File.ReadAllText(currDir + "/launcherv.txt");
+            label4.Text = launcher_ver;
             //API CALL HERE
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            if(!API_ONLINE) {
+            label3.Text = "Connecting to API...";
             UpdateState(State.INIT);
             SetGameVersion();
             label3.Text = "API Game Version: " + API_GetLatestVer();
+            }
         }
 
         private void StateButton_Click(object sender, EventArgs e)
