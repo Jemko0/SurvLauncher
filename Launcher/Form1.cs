@@ -9,6 +9,10 @@ using System.ComponentModel.Design;
 using System.Security.Principal;
 using System.Text.Json.Serialization;
 using System.Text.Json.Nodes;
+using System.Net.NetworkInformation;
+using Microsoft.Win32;
+using System.Timers;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Launcher
 {
@@ -19,9 +23,14 @@ namespace Launcher
             InitializeComponent();
         }
 
-        private string launcher_ver = "v2.3 - beta";
-
+        private string launcher_ver = "v2.4.1 - beta";
         private bool API_ONLINE = false;
+        public System.Timers.Timer PingTimer = new System.Timers.Timer(3000);
+
+        //directory something like C://Users/User/PathToLauncher.exe/game
+        private string gameDir = System.IO.Directory.GetCurrentDirectory() + "/game";
+        private string currDir = System.IO.Directory.GetCurrentDirectory();
+        State CurrentState;
         private enum State
         {
             INIT,
@@ -31,39 +40,37 @@ namespace Launcher
             INSTALLING,
             CAN_PLAY,
             UNINSTALL,
-            FAILED
+            FAILED //Unused and can be removed
         }
 
-        //directory but with /game added
-        private string gameDir = System.IO.Directory.GetCurrentDirectory() + "/game";
-        private string currDir = System.IO.Directory.GetCurrentDirectory();
-
-        State CurrentState;
+        
         void UpdateState(State NewState)
         {
             CurrentState = NewState;
             switch (NewState)
             {
-                //MAKE SURE FUNCTION CALLS ARE ALWAYS 1 LINE BEFORE RETURN IN CASE
+                //MAKE SURE FUNCTION CALLS ARE ALWAYS LAST
                 case State.INIT:
                     label1.Text = "SurvLauncher " + launcher_ver;
                     StateButton.Enabled = false;
                     StateButton.Text = "Initializing...";
-
-                    //progressbar & percent
                     progressBar1.Visible = false;
                     ProgressPercentageText.Visible = false;
                     UninstallButton.Visible = false;
+                    label3.Text = "API Game Version: " + API_GetLatestVer();
+
+                    PingTimer.Start();
+                    PingTimer.Elapsed += CheckAPIStatus;
                     UpdateState(State.CHECK_FILES);
                     return;
 
                 case State.CHECK_FILES:
                     StateButton.Enabled = false;
                     StateButton.Text = "Checking Files...";
-                    //progressbar & percent
                     progressBar1.Visible = false;
                     ProgressPercentageText.Visible = false;
                     UninstallButton.Visible = false;
+
                     CheckLauncherVersion();
                     CheckFiles();
                     return;
@@ -92,13 +99,13 @@ namespace Launcher
                     progressBar1.Visible = true;
                     ProgressPercentageText.Visible = true;
                     UninstallButton.Visible = false;
+
                     DownloadGame();
                     return;
 
                 case State.CAN_PLAY:
                     StateButton.Enabled = true;
                     StateButton.Text = "Play";
-                    //progressbar & percent
                     progressBar1.Visible = false;
                     ProgressPercentageText.Visible = false;
                     UninstallButton.Visible = true;
@@ -110,6 +117,28 @@ namespace Launcher
                     UninstallButton.Enabled = false;
                     return;
 
+            }
+        }
+
+        public string PingAPI()
+        {
+            using (WebClient client = new WebClient())
+            {
+                Ping ping = new Ping();
+                PingReply reply = ping.Send("violated.one");
+                return reply.Status.ToString();
+            }
+        }
+        
+        public void CheckAPIStatus(object sender, ElapsedEventArgs e)
+        {
+            if(PingAPI() == "Success")
+            {
+                API_ONLINE = true;
+            }
+            else
+            {
+                API_ONLINE = false;
             }
         }
         string API_GetLatestVer()
@@ -138,6 +167,8 @@ namespace Launcher
             UpdateState(State.CHECK_FILES);
             SetGameVersion();
         }
+
+        //Starts download
         private void DownloadGame()
         {
             using (WebClient client = new WebClient())
@@ -147,7 +178,9 @@ namespace Launcher
                 client.DownloadFileCompleted += OnfinishDownload;
             }
         }
-        // Event to track the progress
+
+
+        // Event to track the download progress
         void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             progressBar1.Value = e.ProgressPercentage;
@@ -161,14 +194,15 @@ namespace Launcher
             progressBar1.Value = 0;
             ProgressPercentageText.Text = "100%";
             string finaldest = gameDir + "/game";
+
             UpdateState(State.EXTRACTING);
 
             try
             {
                 System.IO.Compression.ZipFile.ExtractToDirectory("game/game.zip", finaldest);
-                UpdateState(State.CAN_PLAY);
                 System.IO.File.Delete("game/game.zip");
                 SetGameVersion();
+                UpdateState(State.CAN_PLAY);
             }
             catch (Exception err)
             {
@@ -209,7 +243,7 @@ namespace Launcher
             {
                 try
                 {
-                    files = System.IO.Directory.GetDirectories(gameDir);
+                    files = System.IO.Directory.GetDirectories(gameDir); //Checks files based on if there is any folder in the dir (IMPROVE)
                     if (files.Length > 0)
                     {
                         richTextBox1.Text = "Canplay";
@@ -233,7 +267,6 @@ namespace Launcher
             }
         }
 
-        string CurrentLauncherVer;
         private void CheckLauncherVersion()
         {
             launcher_ver = System.IO.File.ReadAllText(currDir + "/launcherv.txt");
@@ -243,15 +276,14 @@ namespace Launcher
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            if(!API_ONLINE) {
             label3.Text = "Connecting to API...";
+
+            //INIT Starts pingtimer
             UpdateState(State.INIT);
             SetGameVersion();
-            label3.Text = "API Game Version: " + API_GetLatestVer();
-            }
         }
 
-        private void StateButton_Click(object sender, EventArgs e)
+        private void StateButton_Click(object sender, EventArgs e) //State button which does different things based on State var
         {
             switch (CurrentState)
             {
@@ -284,8 +316,11 @@ namespace Launcher
 
             static bool IsAdministrator()
             {
+                //WINDOWS
                 WindowsIdentity identity = WindowsIdentity.GetCurrent();
                 WindowsPrincipal principal = new WindowsPrincipal(identity);
+
+                //OTHER PLATFORMS HERE
 #if DEBUG
                 return true;
 #else

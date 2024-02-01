@@ -60,7 +60,6 @@
             richTextBox1.TabIndex = 1;
             richTextBox1.TabStop = false;
             richTextBox1.Text = "console output";
-            richTextBox1.Visible = false;
             // 
             // label1
             // 
@@ -157,7 +156,7 @@
             label4.FlatStyle = FlatStyle.Flat;
             label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             label4.ForeColor = SystemColors.ButtonFace;
-            label4.Location = new Point(421, 126);
+            label4.Location = new Point(75, 154);
             label4.Margin = new Padding(2, 0, 2, 0);
             label4.Name = "label4";
             label4.Size = new Size(214, 28);
