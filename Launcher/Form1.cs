@@ -13,6 +13,7 @@ using System.Net.NetworkInformation;
 using Microsoft.Win32;
 using System.Timers;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Windows.Forms;
 
 namespace Launcher
 {
@@ -23,7 +24,7 @@ namespace Launcher
             InitializeComponent();
         }
 
-        private string launcher_ver = "v2.4.1 - beta";
+        private string launcher_ver = "Release v2.0.0";
         private bool API_ONLINE = false;
         public System.Timers.Timer PingTimer = new System.Timers.Timer(3000);
 
@@ -43,7 +44,7 @@ namespace Launcher
             FAILED //Unused and can be removed
         }
 
-        
+
         void UpdateState(State NewState)
         {
             CurrentState = NewState;
@@ -57,8 +58,9 @@ namespace Launcher
                     progressBar1.Visible = false;
                     ProgressPercentageText.Visible = false;
                     UninstallButton.Visible = false;
-                    label3.Text = "API Game Version: " + API_GetLatestVer();
+                    label3.Text = "Latest Version: " + API_GetLatestVer();
 
+                    DiscordLink.LinkClicked += DiscordLink_LinkClicked;
                     PingTimer.Start();
                     PingTimer.Elapsed += CheckAPIStatus;
                     UpdateState(State.CHECK_FILES);
@@ -71,7 +73,7 @@ namespace Launcher
                     ProgressPercentageText.Visible = false;
                     UninstallButton.Visible = false;
 
-                    CheckLauncherVersion();
+                    //CheckLauncherVersion();
                     CheckFiles();
                     return;
 
@@ -120,7 +122,12 @@ namespace Launcher
             }
         }
 
-        public string PingAPI()
+        private void DiscordLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs largs)
+        {
+            //launch URL please
+        }
+
+        static public string PingAPI()
         {
             using (WebClient client = new WebClient())
             {
@@ -129,10 +136,10 @@ namespace Launcher
                 return reply.Status.ToString();
             }
         }
-        
+
         public void CheckAPIStatus(object sender, ElapsedEventArgs e)
         {
-            if(PingAPI() == "Success")
+            if (PingAPI() == "Success")
             {
                 API_ONLINE = true;
             }
@@ -158,7 +165,7 @@ namespace Launcher
                     return "";
                 }
 
-                
+
             }
         }
         private void UninstallGame()
@@ -189,7 +196,7 @@ namespace Launcher
 
         void OnfinishDownload(object sender, AsyncCompletedEventArgs e)
         {
-            richTextBox1.Text = "DownloadFinished";
+            //richTextBox1.Text = "DownloadFinished";
             progressBar1.Visible = false;
             progressBar1.Value = 0;
             ProgressPercentageText.Text = "100%";
@@ -206,7 +213,11 @@ namespace Launcher
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.Message + "\r\nTry Again", "Extract Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+#if !RELEASE
+                MessageBox.Show(err.Message + "\r\nTHIS CAN BE IGNORED", "Extract Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+#else
+                //pass
+#endif
             }
             UpdateState(State.CHECK_FILES);
         }
@@ -222,7 +233,7 @@ namespace Launcher
 
                 if (current_ver != api_ver)
                 {
-                UpdateState(State.UPDATE_AVAILABLE);
+                    UpdateState(State.UPDATE_AVAILABLE);
                 }
                 else
                 {
@@ -246,7 +257,7 @@ namespace Launcher
                     files = System.IO.Directory.GetDirectories(gameDir); //Checks files based on if there is any folder in the dir (IMPROVE)
                     if (files.Length > 0)
                     {
-                        richTextBox1.Text = "Canplay";
+                        //richTextBox1.Text = "Canplay";
                         UpdateState(State.CAN_PLAY);
                     }
                     else
@@ -262,17 +273,17 @@ namespace Launcher
             else
             {
                 System.IO.Directory.CreateDirectory(gameDir);
-                richTextBox1.Text = "gamedir made";
+                //richTextBox1.Text = "gamedir made";
                 UpdateState(State.CHECK_FILES);
             }
         }
 
-        private void CheckLauncherVersion()
-        {
-            launcher_ver = System.IO.File.ReadAllText(currDir + "/launcherv.txt");
-            label4.Text = launcher_ver;
-            //API CALL HERE
-        }
+        //private void CheckLauncherVersion()
+        //{
+        //    launcher_ver = System.IO.File.ReadAllText(currDir + "/launcherv.txt");
+        //    label4.Text = launcher_ver;
+        //    //API CALL HERE
+        //}
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -288,14 +299,7 @@ namespace Launcher
             switch (CurrentState)
             {
                 case State.UPDATE_AVAILABLE:
-                    if (IsAdministrator())
-                    {
-                        UpdateState(State.INSTALLING);
-                    }
-                    else
-                    {
-                        MessageBox.Show("The Program could not install due to permission conflicts.\r\nTry running as Administrator!");
-                    }
+                    UpdateState(State.INSTALLING);
                     return;
 
                 case State.CAN_PLAY:
@@ -314,19 +318,19 @@ namespace Launcher
             }
         }
 
-            static bool IsAdministrator()
-            {
-                //WINDOWS
-                WindowsIdentity identity = WindowsIdentity.GetCurrent();
-                WindowsPrincipal principal = new WindowsPrincipal(identity);
+        private static bool IsAdministrator()
+        {
+            //WINDOWS
+            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new WindowsPrincipal(identity);
 
-                //OTHER PLATFORMS HERE
-#if DEBUG
+            //OTHER PLATFORMS HERE
+#if !RELEASE
                 return true;
 #else
-                        return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
 #endif
-            }
+        }
 
         private void UninstallButton_Click(object sender, EventArgs e)
         {
