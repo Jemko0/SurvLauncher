@@ -36,13 +36,22 @@
             ProgressPercentageText = new Label();
             UninstallButton = new Button();
             label3 = new Label();
+<<<<<<< Updated upstream
             DiscordLink = new LinkLabel();
+=======
+            dInfo_DownloadSpeed = new Label();
+            dInfo_Progress = new Label();
+>>>>>>> Stashed changes
             SuspendLayout();
             // 
             // progressBar1
             // 
             progressBar1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+<<<<<<< Updated upstream
             progressBar1.Location = new Point(268, 266);
+=======
+            progressBar1.Location = new Point(170, 181);
+>>>>>>> Stashed changes
             progressBar1.Margin = new Padding(2);
             progressBar1.Name = "progressBar1";
             progressBar1.Size = new Size(452, 26);
@@ -100,7 +109,11 @@
             ProgressPercentageText.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point);
             ProgressPercentageText.ForeColor = SystemColors.ButtonFace;
             ProgressPercentageText.ImageAlign = ContentAlignment.MiddleLeft;
+<<<<<<< Updated upstream
             ProgressPercentageText.Location = new Point(724, 258);
+=======
+            ProgressPercentageText.Location = new Point(637, 177);
+>>>>>>> Stashed changes
             ProgressPercentageText.Margin = new Padding(2, 0, 2, 0);
             ProgressPercentageText.Name = "ProgressPercentageText";
             ProgressPercentageText.Size = new Size(59, 41);
@@ -136,6 +149,7 @@
             label3.TabIndex = 7;
             label3.Text = "API_GAME_VER: cbv0.0.0";
             // 
+<<<<<<< Updated upstream
             // DiscordLink
             // 
             DiscordLink.AutoSize = true;
@@ -145,14 +159,49 @@
             DiscordLink.TabIndex = 8;
             DiscordLink.TabStop = true;
             DiscordLink.Text = "DISCORD SERVER";
+=======
+            // dInfo_DownloadSpeed
+            // 
+            dInfo_DownloadSpeed.Anchor = AnchorStyles.Top;
+            dInfo_DownloadSpeed.AutoSize = true;
+            dInfo_DownloadSpeed.FlatStyle = FlatStyle.Flat;
+            dInfo_DownloadSpeed.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            dInfo_DownloadSpeed.ForeColor = SystemColors.ButtonFace;
+            dInfo_DownloadSpeed.Location = new Point(567, 211);
+            dInfo_DownloadSpeed.Margin = new Padding(2, 0, 2, 0);
+            dInfo_DownloadSpeed.Name = "dInfo_DownloadSpeed";
+            dInfo_DownloadSpeed.Size = new Size(68, 28);
+            dInfo_DownloadSpeed.TabIndex = 8;
+            dInfo_DownloadSpeed.Text = "0MB/s";
+            // 
+            // dInfo_Progress
+            // 
+            dInfo_Progress.Anchor = AnchorStyles.Top;
+            dInfo_Progress.AutoSize = true;
+            dInfo_Progress.FlatStyle = FlatStyle.Flat;
+            dInfo_Progress.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            dInfo_Progress.ForeColor = SystemColors.ButtonFace;
+            dInfo_Progress.Location = new Point(170, 211);
+            dInfo_Progress.Margin = new Padding(2, 0, 2, 0);
+            dInfo_Progress.Name = "dInfo_Progress";
+            dInfo_Progress.Size = new Size(132, 28);
+            dInfo_Progress.TabIndex = 9;
+            dInfo_Progress.Text = "0MB / 999MB";
+>>>>>>> Stashed changes
             // 
             // SurvLauncher
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.SteelBlue;
+<<<<<<< Updated upstream
             ClientSize = new Size(984, 462);
             Controls.Add(DiscordLink);
+=======
+            ClientSize = new Size(787, 401);
+            Controls.Add(dInfo_Progress);
+            Controls.Add(dInfo_DownloadSpeed);
+>>>>>>> Stashed changes
             Controls.Add(label3);
             Controls.Add(UninstallButton);
             Controls.Add(ProgressPercentageText);
@@ -180,6 +229,11 @@
         private Label ProgressPercentageText;
         private Button UninstallButton;
         private Label label3;
+<<<<<<< Updated upstream
         private LinkLabel DiscordLink;
+=======
+        private Label dInfo_DownloadSpeed;
+        private Label dInfo_Progress;
+>>>>>>> Stashed changes
     }
 }

@@ -13,7 +13,11 @@ using System.Net.NetworkInformation;
 using Microsoft.Win32;
 using System.Timers;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+<<<<<<< Updated upstream
 using System.Windows.Forms;
+=======
+using Microsoft.VisualBasic.Logging;
+>>>>>>> Stashed changes
 
 namespace Launcher
 {
@@ -43,8 +47,11 @@ namespace Launcher
             UNINSTALL,
             FAILED //Unused and can be removed
         }
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
         void UpdateState(State NewState)
         {
             CurrentState = NewState;
@@ -186,12 +193,32 @@ namespace Launcher
             }
         }
 
-
+        System.Timers.Timer downloadspeedtimer = new System.Timers.Timer(1000);
+        System.Diagnostics.Stopwatch DownloadStopwatch = new System.Diagnostics.Stopwatch();
+        long BytesNow;
+        long DownloadSpeed;
+        bool timerStarted;
+        int timeElapsed = 1;
         // Event to track the download progress
         void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             progressBar1.Value = e.ProgressPercentage;
             ProgressPercentageText.Text = (e.ProgressPercentage.ToString() + "%");
+            dInfo_Progress.Text = ((e.BytesReceived/1024/1024).ToString() + "MB/" + (e.TotalBytesToReceive/1024/1024).ToString() + "MB");
+            BytesNow = e.BytesReceived;
+            dInfo_DownloadSpeed.Text = (DownloadSpeed/1024).ToString() + "KB/s";
+
+            if (!timerStarted)
+            {
+            downloadspeedtimer.Elapsed += Downloadspeedtimer_Elapsed;
+            downloadspeedtimer.Start();
+            }
+        }
+
+        private void Downloadspeedtimer_Elapsed(object? sender, ElapsedEventArgs e)
+        {
+            DownloadSpeed = BytesNow / timeElapsed;
+            timeElapsed++;
         }
 
         void OnfinishDownload(object sender, AsyncCompletedEventArgs e)
@@ -278,12 +305,20 @@ namespace Launcher
             }
         }
 
+<<<<<<< Updated upstream
         //private void CheckLauncherVersion()
         //{
         //    launcher_ver = System.IO.File.ReadAllText(currDir + "/launcherv.txt");
         //    label4.Text = launcher_ver;
         //    //API CALL HERE
         //}
+=======
+        private void CheckLauncherVersion()
+        {
+            launcher_ver = System.IO.File.ReadAllText(currDir + "/launcherv.txt");
+            //API CALL HERE
+        }
+>>>>>>> Stashed changes
 
         private void Form1_Load(object sender, EventArgs e)
         {
