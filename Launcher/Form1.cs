@@ -25,7 +25,7 @@ namespace Launcher
             InitializeComponent();
         }
 
-        private string launcher_ver = "Release v2.0.0";
+        private string launcher_ver = "v2.5 Beta";
         private bool API_ONLINE = false;
         public System.Timers.Timer PingTimer = new System.Timers.Timer(3000);
 
@@ -161,7 +161,7 @@ namespace Launcher
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "API Remote Server Error");
+                    MessageBox.Show(ex.Message, "Remote Server Error");
                     return "";
                 }
 
@@ -178,6 +178,13 @@ namespace Launcher
         //Starts download
         private void DownloadGame()
         {
+            if(Directory.Exists(gameDir + "/game"))
+            {
+                //delete game and remake it cause yea
+                System.IO.Directory.Delete(gameDir + "/game", true);
+                System.IO.Directory.CreateDirectory(gameDir);
+            }
+
             using (WebClient client = new WebClient())
             {
                 client.DownloadProgressChanged += wc_DownloadProgressChanged;
