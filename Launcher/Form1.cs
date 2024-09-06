@@ -1,20 +1,10 @@
-using System.IO;
 using System.Diagnostics;
 using System.Net;
-using System.Linq.Expressions;
-using System.Security.Permissions;
-using System.Runtime.InteropServices;
 using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.Security.Principal;
-using System.Text.Json.Serialization;
 using System.Text.Json.Nodes;
 using System.Net.NetworkInformation;
-using Microsoft.Win32;
 using System.Timers;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Windows.Forms;
-using Microsoft.VisualBasic.Logging;
 
 namespace Launcher
 {
@@ -25,7 +15,7 @@ namespace Launcher
             InitializeComponent();
         }
 
-        private string launcher_ver = "v2.5 Beta";
+        private string launcher_ver = "v2.6";
         private bool API_ONLINE = false;
         public System.Timers.Timer PingTimer = new System.Timers.Timer(3000);
 
@@ -161,7 +151,7 @@ namespace Launcher
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Remote Server Error");
+                    MessageBox.Show(ex.Message, "500 Remote Server Error");
                     return "";
                 }
 
